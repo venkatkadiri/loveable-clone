@@ -15,7 +15,7 @@ export async function findProjectById(id: string): Promise<Project | null> {
   });
 }
 
-type CreateProjectWithMessageInput = {
+export type CreateProjectWithMessageInput = {
   name: string;
   messageContent: string;
 };
