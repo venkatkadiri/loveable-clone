@@ -1,0 +1,16 @@
+{
+  "name": "Lovable",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --dir server run dev",
+    "dev:all": "pnpm --dir server run dev:all",
+    "dev:worker": "pnpm --dir server run dev:worker",
+    "docker:up": "docker compose up -d --wait",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f",
+    "db:migrate": "pnpm --dir server run prisma:migrate",
+    "db:studio": "pnpm --dir server run prisma:studio",
+    "db:generate": "pnpm --dir server run prisma:generate",
+    "db:push": "pnpm --dir server run prisma:push"
+  }
+}

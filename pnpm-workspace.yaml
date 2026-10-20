@@ -1,0 +1,16 @@
+packages:
+  - "server"
+
+onlyBuiltDependencies:
+  - "@prisma/client"
+  - "@prisma/engines"
+  - "@swc/core"
+  - "esbuild"
+  - "prisma"
+  - "protobufjs"
+allowBuilds:
+  "@prisma/engines": true
+  "@swc/core": true
+  esbuild: true
+  prisma: true
+  protobufjs: true
