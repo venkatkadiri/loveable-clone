@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch --exclude node_modules/** src/index.ts",
-    "dev:worker": "tsx watch --exclude node_modules/** src/temporal/worker.ts",
+    "dev": "node --watch --import tsx src/index.ts",
+    "dev:worker": "node --watch --import tsx src/temporal/worker.ts",
     "dev:all": "concurrently -n server,worker -c blue,green \"pnpm run dev\" \"pnpm run dev:worker\"",
     "prisma:migrate": "prisma generate && prisma migrate dev",
     "prisma:studio": "prisma studio",
@@ -22,6 +22,7 @@
     "@langchain/openai": "^1.6.2",
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
+    "@prisma/client-runtime-utils": "7.10.0",
     "@temporalio/activity": "^1.24.0",
     "@temporalio/client": "^1.24.0",
     "@temporalio/worker": "^1.24.0",

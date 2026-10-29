@@ -1,0 +1,71 @@
+{
+  "info": {
+    "name": "Lovable API",
+    "description": "Collection for the Lovable Express API running locally on port 3000.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/health",
+          "host": ["{{base_url}}"],
+          "path": ["api", "health"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List Projects",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/projects",
+          "host": ["{{base_url}}"],
+          "path": ["api", "projects"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Project by Id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/projects/{{project_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "projects", "{{project_id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add Message to Project",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"content\": \"Write a landing page for a SaaS product\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/projects/{{project_id}}/messages",
+          "host": ["{{base_url}}"],
+          "path": ["api", "projects", "{{project_id}}", "messages"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
