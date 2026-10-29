@@ -30,3 +30,15 @@ export async function startPing(name: string): Promise<string> {
 
   return handle.result();
 }
+export async function main(): Promise<void> {
+  const name = process.argv[2] ?? "temporal";
+  const result = await startPing(name);
+  console.log(`pingWorkflow result: ${result}`);
+}
+
+if (require.main === module) {
+  main().catch((error) => {
+    console.error("Temporal client failed:", error);
+    process.exit(1);
+  });
+}
