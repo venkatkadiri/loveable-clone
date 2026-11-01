@@ -54,7 +54,7 @@ export async function main(): Promise<void> {
   console.log(`pingWorkflow result: ${result}`);
 }
 
-if (require.main === module) {
+if (process.argv[1] && process.argv[1].endsWith("src/temporal/client.ts")) {
   main().catch((error) => {
     console.error("Temporal client failed:", error);
     process.exit(1);

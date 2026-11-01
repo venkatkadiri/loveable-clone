@@ -19,9 +19,13 @@ export async function getProjectById(id: string): Promise<Project | null> {
 export async function createProject(messageContent: string) {
   const name = generateSlug(3, { format: "kebab" });
   const project = await createProjectWithMessage({ name, messageContent });
-  await startCodeAgent({
+
+  void startCodeAgent({
     projectId: project.id,
     prompt: messageContent,
+  }).catch((error) => {
+    console.error("Background code agent start failed:", error);
   });
+
   return project;
 }

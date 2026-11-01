@@ -42,11 +42,14 @@ export function getChatModel(
   modelName: string,
   reasoning: boolean,
 ): BaseChatModel {
-  if (env.OPENAI_API_KEY.trim()) {
+  if (hasLlm()) {
     return openaiChatModel(modelName, reasoning);
   }
 
   throw new Error(
     "No chat model provider configured. Set OPENAI_API_KEY (or a supported provider key).",
   );
+}
+export function hasLlm(): boolean {
+  return Boolean(env.OPENAI_API_KEY.trim().length > 0);
 }

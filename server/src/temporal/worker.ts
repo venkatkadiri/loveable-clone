@@ -1,3 +1,4 @@
+import path from "node:path";
 import { NativeConnection, Worker } from "@temporalio/worker";
 import { env } from "../config/env";
 import { retryWithExponentialBackoff } from "../utils/retry";
@@ -20,14 +21,18 @@ export async function main(): Promise<void> {
     connection,
     namespace: env.TEMPORAL_NAMESPACE,
     taskQueue: env.TEMPORAL_TASK_QUEUE,
-    workflowsPath: require.resolve("./workflows"),
+    workflowsPath: path.resolve(process.cwd(), "src/temporal/workflows.ts"),
     activities: activities,
   });
 
   console.log(
     `Temporal worker listening on task queue "${env.TEMPORAL_TASK_QUEUE}" (${env.TEMPORAL_ADDRESS})`,
   );
-  worker.run().catch((err) => {
+  await worker.run();
+}
+
+if (process.argv[1] && process.argv[1].endsWith("src/temporal/worker.ts")) {
+  main().catch((err) => {
     console.error("Temporal worker failed:", err);
     process.exit(1);
   });
