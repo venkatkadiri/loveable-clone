@@ -5,6 +5,8 @@ import {
   CreateProjectWithMessageInput,
   createProjectWithMessage,
 } from "../repository/project.repository";
+import { generateSlug } from "random-word-slugs";
+import { startCodeAgent } from "../temporal/client";
 
 export async function getAllProjects(): Promise<Project[]> {
   return findAllProjects();
@@ -14,16 +16,12 @@ export async function getProjectById(id: string): Promise<Project | null> {
   return findProjectById(id);
 }
 
-export async function createProject(
-  input: string | CreateProjectWithMessageInput,
-): Promise<Project> {
-  const payload =
-    typeof input === "string"
-      ? {
-          name: input.trim().slice(0, 40) || "Untitled project",
-          messageContent: input.trim(),
-        }
-      : input;
-
-  return createProjectWithMessage(payload);
+export async function createProject(messageContent: string) {
+  const name = generateSlug(3, { format: "kebab" });
+  const project = await createProjectWithMessage({ name, messageContent });
+  await startCodeAgent({
+    projectId: project.id,
+    prompt: messageContent,
+  });
+  return project;
 }

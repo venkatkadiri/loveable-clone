@@ -3,9 +3,9 @@
   "private": true,
   "scripts": {
     "dev": "pnpm --dir server run dev",
-    "dev:all": "pnpm --dir server run dev:all",
-    "dev:worker": "pnpm --dir server run dev:worker",
-    "docker:up": "docker compose up -d --wait",
+    "dev:all": "for port in 3000 5433 7233 8233; do pids=$(lsof -ti tcp:$port || true); if [ -n \"$pids\" ]; then echo \"Killing processes on port $port: $pids\"; echo \"$pids\" | xargs kill -9; fi; done && pnpm --dir server run dev:all",
+    "dev:worker": "for port in 3000 5433 7233 8233; do pids=$(lsof -ti tcp:$port || true); if [ -n \"$pids\" ]; then echo \"Killing processes on port $port: $pids\"; echo \"$pids\" | xargs kill -9; fi; done && pnpm --dir server run dev:worker",
+    "docker:up": "for port in 5432 5433 7233 8233; do pids=$(lsof -ti tcp:$port || true); if [ -n \"$pids\" ]; then echo \"Killing processes on port $port: $pids\"; echo \"$pids\" | xargs kill -9; fi; done && docker compose down -v --remove-orphans && docker compose up -d --wait",
     "docker:down": "docker compose down",
     "docker:logs": "docker compose logs -f",
     "db:migrate": "pnpm --dir server run prisma:migrate",

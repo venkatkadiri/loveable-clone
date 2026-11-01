@@ -37,3 +37,16 @@ export function openaiChatModel(
 
   return new ChatOpenAI(base);
 }
+
+export function getChatModel(
+  modelName: string,
+  reasoning: boolean,
+): BaseChatModel {
+  if (env.OPENAI_API_KEY.trim()) {
+    return openaiChatModel(modelName, reasoning);
+  }
+
+  throw new Error(
+    "No chat model provider configured. Set OPENAI_API_KEY (or a supported provider key).",
+  );
+}

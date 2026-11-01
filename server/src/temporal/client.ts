@@ -1,7 +1,25 @@
 import { Client, Connection } from "@temporalio/client";
 import { env } from "../config/env";
 import { retryWithExponentialBackoff } from "../utils/retry";
-import { pingWorkflow } from "./workflows";
+import {
+  codeAgentWorkflow,
+  pingWorkflow,
+  type CodeAgentInput,
+} from "./workflows";
+
+export async function startCodeAgent(
+  input: CodeAgentInput,
+): Promise<Awaited<ReturnType<typeof codeAgentWorkflow>>> {
+  const client = await connect();
+
+  const handle = await client.workflow.start(codeAgentWorkflow, {
+    taskQueue: env.TEMPORAL_TASK_QUEUE,
+    workflowId: `code-agent-${Date.now()}`,
+    args: [input],
+  });
+
+  return handle.result();
+}
 
 export async function connect(): Promise<Client> {
   return retryWithExponentialBackoff(
