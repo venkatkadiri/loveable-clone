@@ -1,21 +1,21 @@
--- CreateEnum
-CREATE TYPE "MessageRole" AS ENUM ('user', 'assistant');
+-- liquibase formatted sql
 
--- CreateEnum
-CREATE TYPE "MessageType" AS ENUM ('result', 'error');
+-- changeset lovable:001-initial-schema labels:baseline context:all
+-- comment: Create the Lovable application schema for a clean PostgreSQL database.
 
--- CreateTable
+CREATE TYPE "MessageRole" AS ENUM ('USER', 'ASSISTANT');
+
+CREATE TYPE "MessageType" AS ENUM ('RESULT', 'ERROR');
+
 CREATE TABLE "Project" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-
     CONSTRAINT "Project_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
 CREATE TABLE "Message" (
     "id" TEXT NOT NULL,
     "content" TEXT NOT NULL,
@@ -24,11 +24,9 @@ CREATE TABLE "Message" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "projectId" TEXT NOT NULL,
-
     CONSTRAINT "Message_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
 CREATE TABLE "Fragment" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
@@ -37,21 +35,21 @@ CREATE TABLE "Fragment" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "messageId" TEXT NOT NULL,
-
     CONSTRAINT "Fragment_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
 CREATE INDEX "Project_userId_idx" ON "Project"("userId");
-
--- CreateIndex
 CREATE INDEX "Message_projectId_idx" ON "Message"("projectId");
-
--- CreateIndex
 CREATE INDEX "Fragment_messageId_idx" ON "Fragment"("messageId");
 
--- AddForeignKey
-ALTER TABLE "Message" ADD CONSTRAINT "Message_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Message"
+    ADD CONSTRAINT "Message_projectId_fkey"
+    FOREIGN KEY ("projectId") REFERENCES "Project"("id")
+    ON DELETE CASCADE ON UPDATE CASCADE;
 
--- AddForeignKey
-ALTER TABLE "Fragment" ADD CONSTRAINT "Fragment_messageId_fkey" FOREIGN KEY ("messageId") REFERENCES "Message"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "Fragment"
+    ADD CONSTRAINT "Fragment_messageId_fkey"
+    FOREIGN KEY ("messageId") REFERENCES "Message"("id")
+    ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- rollback DROP TABLE "Fragment"; DROP TABLE "Message"; DROP TABLE "Project"; DROP TYPE "MessageType"; DROP TYPE "MessageRole";

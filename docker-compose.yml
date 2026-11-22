@@ -57,5 +57,23 @@ services:
     ports:
       - "8233:8080"
 
+  liquibase:
+    image: liquibase/liquibase:4.31.1
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./server/liquibase:/workspace/liquibase:ro
+    command:
+      - --defaultsFile=/workspace/liquibase/liquibase.properties
+      - update
+    profiles:
+      - migrate
+    environment:
+      LIQUIBASE_COMMAND_URL: jdbc:postgresql://postgres:5432/lovablejs
+      LIQUIBASE_COMMAND_USERNAME: vibe
+      LIQUIBASE_COMMAND_PASSWORD: vibe
+    working_dir: /workspace/liquibase
+
 volumes:
   postgres-data:

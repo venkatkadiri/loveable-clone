@@ -8,9 +8,12 @@
     "docker:up": "docker compose down --remove-orphans || true; for port in 5432 5433 7233 8233; do pids=$(lsof -ti tcp:$port || true); if [ -n \"$pids\" ]; then echo \"Killing processes on port $port: $pids\"; echo \"$pids\" | xargs kill -9; fi; done && docker compose up -d --wait",
     "docker:down": "docker compose down",
     "docker:logs": "docker compose logs -f",
-    "db:migrate": "pnpm --dir server run prisma:migrate",
+    "db:migrate": "pnpm --dir server run db:liquibase:update",
     "db:studio": "pnpm --dir server run prisma:studio",
     "db:generate": "pnpm --dir server run prisma:generate",
-    "db:push": "pnpm --dir server run prisma:push"
+    "db:push": "node -e \"console.error('Blocked: prisma db push is disabled. Run pnpm db:migrate.'); process.exit(1)\"",
+    "db:liquibase:validate": "pnpm --dir server run db:liquibase:validate",
+    "db:liquibase:status": "pnpm --dir server run db:liquibase:status",
+    "db:liquibase:update": "pnpm --dir server run db:liquibase:update"
   }
 }
