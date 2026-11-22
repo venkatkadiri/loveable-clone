@@ -32,4 +32,5 @@ export const env = {
   TEMPORAL_ADDRESS: process.env.TEMPORAL_ADDRESS ?? "127.0.0.1:7233",
   TEMPORAL_NAMESPACE: process.env.TEMPORAL_NAMESPACE ?? "default",
   TEMPORAL_TASK_QUEUE: process.env.TEMPORAL_TASK_QUEUE ?? "coding-agent",
+  TYPESAFE_API_KEY: process.env.TYPESAFE_API_KEY ?? "",
 } as const;
